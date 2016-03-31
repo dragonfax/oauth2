@@ -52,7 +52,6 @@ module OAuth2
     def connection
       @connection ||= begin
         conn = Faraday.new(site, options[:connection_opts])
-        conn.response :logger
         conn.build do |b|
           options[:connection_build].call(b)
         end if options[:connection_build]
@@ -95,6 +94,7 @@ module OAuth2
         yield(req) if block_given?
       end
       response = Response.new(response, :parse => opts[:parse])
+      puts response.inspect
 
       case response.status
       when 301, 302, 303, 307
